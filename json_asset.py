@@ -1,28 +1,23 @@
 import requests
 from datetime import datetime, timezone, timedelta
+import bisect
 
 def current_time():
     JST = timezone(timedelta(hours=+9), 'JST')
 
-    frequency = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58]
-    now_minute = datetime.now(JST).minute
-
-    for i, minute in enumerate(frequency):
-        if now_minute in [0, 1, 2, 3]:
-            preformatted = datetime.now(JST) + timedelta(minutes=-5)
-            current_time = str(preformatted.strftime('%Y%m%d%H')) + str(frequency[-1]-1).zfill(2)
-            break
-        elif now_minute in [58, 59]:
-            current_time = str(datetime.now(JST).strftime('%Y%m%d%H')) + str(frequency[-1]-1).zfill(2)
-            break
-        elif now_minute > minute: #3:12
-            continue
+    def helper(now_minute=datetime.now(JST).minute):
+        freq = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58]
+        i = bisect.bisect_left(freq, now_minute)
+        if i == 0:
+            return -1, freq[-1]-1
         else:
-            if now_minute > frequency[i-1]:
-                current_time = str(datetime.now(JST).strftime('%Y%m%d%H')) + str(frequency[i-1]-1).zfill(2)
-                break
+            return 0, freq[i-1]-1
+
+    preformatted = datetime.now(JST) + timedelta(hours=helper()[0])
+    current_time = str(preformatted.strftime('%Y%m%d%H')) + str(helper()[1]).zfill(2)
 
     return current_time
+
 
 def scrape(area, current_time=current_time()):
 
