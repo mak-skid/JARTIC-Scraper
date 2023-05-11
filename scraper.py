@@ -19,9 +19,9 @@ def current_time():
     return current_time
 
 
-def scrape(area, current_time=current_time()):
+def scrape(area, current_time):
 
-    url = 'https://www.jartic.or.jp/d/traffic_info/r1/%s/d/301/%s.json' % current_time, area
+    url = 'https://www.jartic.or.jp/d/traffic_info/r1/%s/d/301/%s.json' % (current_time, area)
 
     r = requests.get(url)
 
