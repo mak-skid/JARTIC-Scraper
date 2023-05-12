@@ -2,14 +2,15 @@ from scraper import scrape, current_time
 from area_dict import area
 
 def producer(): #iterates each area in area_dict and returns a dictionary of all areas
-    current_time = current_time()
+    time = current_time()
 
     all_areas = {}
 
     for area_code in area.values():
-        all_areas[area_code] = json_rearranger(area_code, current_time)
+        all_areas[area_code] = json_rearranger(area_code, time)
     
-    return current_time, all_areas
+    print('producer.py: ' + time)
+    return time, all_areas
 
 
 def json_rearranger(area_code, current_time): #fetch json and rearrange each element with an updated key
@@ -17,6 +18,10 @@ def json_rearranger(area_code, current_time): #fetch json and rearrange each ele
 
     new_event = {}
     new_events = [] #list of updated JSON of each traffic event
+    
+    
+    if raw_json in ['404 Not Found', None]:
+        return new_events
 
     keys = ['c', 'd', 'i', 'r', 'rd', 'j', 'coordinates']
     new_keys = ['規制原因', '方向', '区間', '路線名', '規制内容', '渋滞長', '位置']
@@ -24,7 +29,10 @@ def json_rearranger(area_code, current_time): #fetch json and rearrange each ele
     for feature in raw_json["features"]:
         event = feature["properties"]
         if "geometry" in feature:
-            event["coordinates"] = feature["geometry"]["coordinates"]
+            event["coordinates"] = str(feature["geometry"]["coordinates"])
+        else:
+            event["coordinates"] = None
+
         for key, element in event.items():
             if key in keys:
                 new_key = new_keys[keys.index(key)]

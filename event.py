@@ -8,14 +8,15 @@ class Event(Base):
 
     __tablename__ = "event"
     __table_args__=({"mysql_engine": "InnoDB"})
-    time = Column("time", DateTime, not_null=True)
-    area = Column("area", Text, not_null=True)
-    cause = Column("cause", Text, not_null=True)
-    direction = Column("direction", Text, not_null=True)
-    section = Column("section", Text, not_null=True)
-    route = Column("route", Text, not_null=True)
-    detail = Column("detail", Text, not_null=True)
-    length = Column("length", Integer, not_null=False)
+    time = Column("time", DateTime, nullable=False, primary_key=True)
+    area = Column("area", Text, nullable=False)
+    cause = Column("cause", Text, nullable=False)
+    direction = Column("direction", Text, nullable=False, primary_key=True)
+    section = Column("section", Text, nullable=False, primary_key=True)
+    route = Column("route", Text, nullable=False)
+    detail = Column("detail", Text, nullable=False)
+    length = Column("length", Integer, nullable=True)
+    coordinates = Column("coordinates", Text, nullable=True)
     
 
 def main():

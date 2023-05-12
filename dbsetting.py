@@ -15,8 +15,8 @@ ssl      = {
 }
 
 ENGINE = create_engine( #connect to database
-    f"mysql+mysqlconnector://{user}:{passwd}@{host}/{db}?ssl_mode={ssl_mode}",
-    connect_args={"ssl": ssl},
+    f"mysql+mysqlconnector://{user}:{passwd}@{host}/{db}",
+    connect_args={"ssl": ssl, "ssl_mode": ssl_mode},
 )
 session = scoped_session(sessionmaker(bind=ENGINE))
 
