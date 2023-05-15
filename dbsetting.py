@@ -5,18 +5,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
-host= os.getenv("HOST"),
-user=os.getenv("USERNAME"),
-passwd= os.getenv("PASSWORD"),
-db= os.getenv("DATABASE"),
-ssl_mode = "VERIFY_IDENTITY",
-ssl      = {
-    "ca": "/etc/ssl/cert.pem"
-}
+HOST= os.getenv("HOST")
+USER=os.getenv("USERNAME")
+PASSWD= os.getenv("PASSWORD")
+DB= os.getenv("DATABASE")
+SSL_CA = "/etc/ssl/cert.pem"
 
 ENGINE = create_engine( #connect to database
-    f"mysql+mysqlconnector://{user}:{passwd}@{host}/{db}",
-    connect_args={"ssl": ssl, "ssl_mode": ssl_mode},
+    f"mysql+mysqlconnector://{USER}:{PASSWD}@{HOST}/{DB}?ssl_verify_identity:{True}",
+    connect_args={"ssl_ca": SSL_CA},
+    echo=True
 )
 session = scoped_session(sessionmaker(bind=ENGINE))
 
