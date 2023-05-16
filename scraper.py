@@ -25,6 +25,8 @@ def scrape(area, current_time):
 
     r = requests.get(url)
 
+    print('scraper.py: ' + area, current_time)
+
     if r.status_code == 404:
         return '404 Not Found'
 
