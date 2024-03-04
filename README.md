@@ -1,2 +1,2 @@
 # JARTIC-Scraper
-An API which scrapes road traffic data of all Japan from JARTIC.
+An API that scrapes road traffic data of all of Japan from JARTIC.
